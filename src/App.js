@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { getHalfDeck } from './services';
 import ThreeLines from './components/ThreeLines';
+import { BrowserRouter as Router,
+  Switch,
+  Route,
+  Link} from 'react-router-dom'
 
 function App() {
 
@@ -8,7 +12,7 @@ function App() {
 
   const updateHalf = async () => {
     const response = await getHalfDeck()
-    setHalfDeck(response.data.cards)
+    await setHalfDeck(response.data.cards)
   }
 
   useEffect(()=>{
@@ -16,10 +20,32 @@ function App() {
   },[])
 
   return (
-    <div className="App">
-      {!halfDeck ? <h1>Loading</h1> : <ThreeLines setHalfDeck={setHalfDeck} halfDeck={halfDeck} />}
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/start">About</Link>
+            </li>
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
 
-    </div>
+        <Switch>
+          <Route path="/start">
+            <ThreeLines setHalfDeck={setHalfDeck} halfDeck={halfDeck} />
+          </Route>
+          <Route path="/">
+            <h1>Hello World</h1>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

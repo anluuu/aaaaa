@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Line from './Line.js';
+import { getLineNumber } from '../services'
 
 const ThreeLines = ({ halfDeck }) => {
 
@@ -17,70 +18,23 @@ const ThreeLines = ({ halfDeck }) => {
 
   }, [halfDeck])
 
-  const setLastCard = async (deck) => {
-    await setCard(deck[10])
-    console.log('carta final',deck[10])
-    console.log('deck final',deck)
-  }
-
-  const selectLine = (lineNum) => {
-    if(lineNum === 1){
-        let newDeck = pileThree.concat(pileOne,pileTwo)
-        let newPileOne = []
-        let newPileTwo = []
-        let newPileThree = []
-        for (let i=0;i<20;i = i + 3){
-          newPileOne.push(newDeck[i])
-          newPileTwo.push(newDeck[i + 1])
-          newPileThree.push(newDeck[i + 2])
-        }
-        setPileOne(newPileOne);
-        setPileTwo(newPileTwo);
-        setPileThree(newPileThree);
-        let finalDeck = pileThree.concat(pileOne,pileTwo)
-        setFinalDeck(finalDeck)
-        setRepeat(repeat -1)
-    }
-    else if(lineNum === 2){
-
-        let newDeck = pileOne.concat(pileTwo,pileThree)
-        let newPileOne = []
-        let newPileTwo = []
-        let newPileThree = []
-        for (let i=0;i<20;i = i + 3){
-          newPileOne.push(newDeck[i])
-          newPileTwo.push(newDeck[i + 1])
-          newPileThree.push(newDeck[i + 2])
-        }
-        setPileOne(newPileOne);
-        setPileTwo(newPileTwo);
-        setPileThree(newPileThree);
-        let finalDeck = pileOne.concat(pileTwo,pileThree)
-        setFinalDeck(finalDeck)
-        setRepeat(repeat -1)
-    }
-    else if (lineNum === 3){
-
-        let newDeck = pileTwo.concat(pileThree,pileOne)
-        let newPileOne = []
-        let newPileTwo = []
-        let newPileThree = []
-        for (let i=0;i<20;i = i + 3){
-          newPileOne.push(newDeck[i])
-          newPileTwo.push(newDeck[i + 1])
-          newPileThree.push(newDeck[i + 2])
-        }
-        setPileOne(newPileOne);
-        setPileTwo(newPileTwo);
-        setPileThree(newPileThree);
-        let finalDeck = pileTwo.concat(pileThree,pileOne)
-        setFinalDeck(finalDeck)
-        setRepeat(repeat -1)
-    }
-  }
   useEffect(()=>{
     if(repeat === 0) setLastCard(finalDeck)
   },[repeat])
+
+  const setLastCard = async (deck) => {
+    await setCard(deck[10])
+  }
+
+  const selectLine = async (lineNum) => {
+    const response = await getLineNumber(lineNum, pileOne, pileTwo, pileThree);
+    const { newPileOne, newPileTwo, newPileThree,newDeck } = response;
+      setPileOne(newPileOne);
+      setPileTwo(newPileTwo);
+      setPileThree(newPileThree);
+      setFinalDeck(newDeck)
+      setRepeat(repeat -1)
+  }
 
     return (
         <div>
