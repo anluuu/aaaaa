@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const Line = ({ pile, lineNum, selectLine }) => {
 
@@ -7,7 +7,7 @@ const Line = ({ pile, lineNum, selectLine }) => {
   }
 
     return (
-        <div style={cardStyle} onClick={handleClick}>
+        <div className="cardStyle m-1" onClick={handleClick}>
         {pile.map(card => (
               <img src={card.image} style={cardEach} key={card.code} alt=''/>
         ))}
@@ -18,14 +18,6 @@ const Line = ({ pile, lineNum, selectLine }) => {
 const cardEach = {
   width: '150px',
   cursor: 'pointer',
-  border: '1px solid black'
-}
-
-const cardStyle = {
-  display: 'flex',
-  width: 'min-content',
-  marginBottom: '10px'
-
 }
 
 export default Line;

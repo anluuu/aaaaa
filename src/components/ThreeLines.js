@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Line from './Line.js';
-import { getLineNumber } from '../services'
+import { getLineNumber, getHalfDeck } from '../services'
 
-const ThreeLines = ({ halfDeck }) => {
+const ThreeLines = () => {
 
   const [pileOne, setPileOne] = useState([]);
   const [pileTwo, setPileTwo] = useState([]);
@@ -10,16 +10,29 @@ const ThreeLines = ({ halfDeck }) => {
   const [finalDeck, setFinalDeck] = useState([]);
   const [repeat, setRepeat] = useState(3);
   const [card, setCard] = useState(null);
+  const [halfDeck, setHalfDeck] = useState(null);
+
+  const updateHalf = async () => {
+    const response = await getHalfDeck()
+    await setHalfDeck(response.data.cards)
+  }
+
+  useEffect(()=>{
+    updateHalf()
+  },[])
 
   useEffect(() => {
-    setPileOne(halfDeck.slice(0,7))
-    setPileTwo(halfDeck.slice(7,14))
-    setPileThree(halfDeck.slice(14,21))
+    if(halfDeck){
+      setPileOne(halfDeck.slice(0,7))
+      setPileTwo(halfDeck.slice(7,14))
+      setPileThree(halfDeck.slice(14,21))
+    }
 
   }, [halfDeck])
 
   useEffect(()=>{
     if(repeat === 0) setLastCard(finalDeck)
+    // eslint-disable-next-line
   },[repeat])
 
   const setLastCard = async (deck) => {
@@ -38,12 +51,12 @@ const ThreeLines = ({ halfDeck }) => {
 
     return (
         <div>
-        {card === null ?
-          <Fragment>
+          {!card ? <Fragment>
             <Line pile={pileOne} selectLine={selectLine} lineNum={1} />
             <Line pile={pileTwo} selectLine={selectLine} lineNum={2} />
             <Line pile={pileThree} selectLine={selectLine} lineNum={3} />
-          </Fragment> : <img src={card.image} alt='last card' /> }
+          </Fragment> : <img src={card.image} className="center-image" alt="last card" width="200" />}
+
         </div>
     )
 }
