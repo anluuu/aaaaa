@@ -7,19 +7,24 @@ const Line = ({ pile, lineNum, selectLine }) => {
   }
 
     return (
-        <div onClick={handleClick}>
+        <div style={cardStyle} onClick={handleClick}>
         {pile.map(card => (
-          <Fragment key={card.code} >
-              <img src={card.image} style={cardStyle} key={card.code} alt=''/>
-          </Fragment>
+              <img src={card.image} style={cardEach} key={card.code} alt=''/>
         ))}
         </div>
     )
 }
 
-const cardStyle = {
+const cardEach = {
   width: '150px',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  border: '1px solid black'
+}
+
+const cardStyle = {
+  display: 'flex',
+  width: 'min-content',
+  marginBottom: '10px'
 
 }
 

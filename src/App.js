@@ -1,17 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import { apiURL } from './services';
+import { getHalfDeck } from './services';
 import ThreeLines from './components/ThreeLines';
 
 function App() {
 
   const [halfDeck, setHalfDeck] = useState(null);
-  
+
   const updateHalf = async () => {
-    const response = await axios.get(`${apiURL}/new/draw/?count=21`)
+    const response = await getHalfDeck()
     setHalfDeck(response.data.cards)
   }
-    
+
   useEffect(()=>{
     updateHalf()
   },[])
@@ -23,6 +22,7 @@ function App() {
     </div>
   );
 }
+
 
 
 export default App;

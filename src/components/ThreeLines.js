@@ -6,7 +6,7 @@ const ThreeLines = ({ halfDeck }) => {
   const [pileOne, setPileOne] = useState([]);
   const [pileTwo, setPileTwo] = useState([]);
   const [pileThree, setPileThree] = useState([]);
-  const [newNewDeck, setNewNewDeck] = useState(null);
+  const [finalDeck, setFinalDeck] = useState([]);
   const [repeat, setRepeat] = useState(3);
   const [card, setCard] = useState(null);
 
@@ -14,19 +14,18 @@ const ThreeLines = ({ halfDeck }) => {
     setPileOne(halfDeck.slice(0,7))
     setPileTwo(halfDeck.slice(7,14))
     setPileThree(halfDeck.slice(14,21))
-    
+
   }, [halfDeck])
 
-  const setLastCard = () => {
-    if(repeat === 0) setCard(newNewDeck[10])
+  const setLastCard = async (deck) => {
+    await setCard(deck[10])
+    console.log('carta final',deck[10])
+    console.log('deck final',deck)
   }
 
   const selectLine = (lineNum) => {
     if(lineNum === 1){
-      if(repeat > 0){
-        setRepeat(repeat -1)
-        let newDeck = pileTwo.concat(pileOne,pileThree)
-        console.log(newDeck)
+        let newDeck = pileThree.concat(pileOne,pileTwo)
         let newPileOne = []
         let newPileTwo = []
         let newPileThree = []
@@ -38,14 +37,13 @@ const ThreeLines = ({ halfDeck }) => {
         setPileOne(newPileOne);
         setPileTwo(newPileTwo);
         setPileThree(newPileThree);
-        setNewNewDeck(newDeck)        
-      }
+        let finalDeck = pileThree.concat(pileOne,pileTwo)
+        setFinalDeck(finalDeck)
+        setRepeat(repeat -1)
     }
     else if(lineNum === 2){
-      if(repeat > 0){
-        setRepeat(repeat -1)
-        let newDeck = pileThree.concat(pileTwo,pileOne)
-        console.log(newDeck)
+
+        let newDeck = pileOne.concat(pileTwo,pileThree)
         let newPileOne = []
         let newPileTwo = []
         let newPileThree = []
@@ -54,18 +52,16 @@ const ThreeLines = ({ halfDeck }) => {
           newPileTwo.push(newDeck[i + 1])
           newPileThree.push(newDeck[i + 2])
         }
-        newDeck = newPileThree.concat(newPileTwo,newPileOne)
         setPileOne(newPileOne);
         setPileTwo(newPileTwo);
         setPileThree(newPileThree);
-        setNewNewDeck(newDeck) 
-      }
+        let finalDeck = pileOne.concat(pileTwo,pileThree)
+        setFinalDeck(finalDeck)
+        setRepeat(repeat -1)
     }
     else if (lineNum === 3){
-      if(repeat > 0 ){        
-        setRepeat(repeat -1)
+
         let newDeck = pileTwo.concat(pileThree,pileOne)
-        console.log(newDeck)
         let newPileOne = []
         let newPileTwo = []
         let newPileThree = []
@@ -77,15 +73,15 @@ const ThreeLines = ({ halfDeck }) => {
         setPileOne(newPileOne);
         setPileTwo(newPileTwo);
         setPileThree(newPileThree);
-        newDeck = newPileTwo.concat(newPileThree,newPileOne)
-        setNewNewDeck(newDeck)
-      }
+        let finalDeck = pileTwo.concat(pileThree,pileOne)
+        setFinalDeck(finalDeck)
+        setRepeat(repeat -1)
     }
   }
   useEffect(()=>{
-    setLastCard()
+    if(repeat === 0) setLastCard(finalDeck)
   },[repeat])
-  
+
     return (
         <div>
         {card === null ?
