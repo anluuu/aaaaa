@@ -1,2 +1,0 @@
-create function in ThreeLines to shuffle cards, add all cards to Total pile and 
-call shuffle api then call updatePiles again;

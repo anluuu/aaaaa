@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Card from './layouts/Card'
 
 
 const LastCard = ({card, resetGame}) => {
@@ -17,6 +18,7 @@ const LastCard = ({card, resetGame}) => {
       </div>
       <div className="text-center">
         <Link to="/play" className="btn btn-light m-1" onClick={handleClick}> Play Again </Link>
+        <Card />
       </div>
     </div>
   )

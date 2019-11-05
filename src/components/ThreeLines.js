@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Line from './Line.js';
 import { getLineNumber, getHalfDeck } from '../services';
-import Spinner from '../components/layouts/Spinner.js';
+import Spinner from './layouts/Spinner.js';
 import LastCard from './LastCard';
 
 const ThreeLines = () => {
