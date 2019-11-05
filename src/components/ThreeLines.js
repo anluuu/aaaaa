@@ -1,74 +1,138 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, useReducer } from 'react';
 import Line from './Line.js';
 import { getLineNumber, getHalfDeck } from '../services';
 import Spinner from './layouts/Spinner.js';
 import LastCard from './LastCard';
 
+const initialState = {
+  pileOne: [],
+  pileTwo: [],
+  pileThree: [],
+  finalDeck: [],
+  repeat: 3,
+  card: null,
+  halfDeck: null
+}
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_FIRST_PILES':
+      return {
+        ...state,
+        pileOne: action.payload.slice(0,7),
+        pileTwo: action.payload.slice(7,14),
+        pileThree: action.payload.slice(14,21)
+      }
+    case 'UPDATE_HALFDECK':
+      return {
+        ...state,
+        halfDeck: action.payload
+      }
+    case 'RESET_GAME':
+      console.log(initialState)
+      console.log(state)
+      return {
+        initialState,
+
+      }
+
+    case 'SET_FINAL_DECK':
+      return {
+        ...state,
+        finalDeck: action.payload
+      }
+    case 'SET_NEW_PILES':
+      return {
+        ...state,
+        pileOne: action.payload.newPileOne,
+        pileTwo: action.payload.newPileTwo,
+        pileThree: action.payload.newPileThree
+      }
+    case 'REPEAT':
+      return {
+        ...state,
+        repeat: action.payload
+      }
+    case 'SET_LAST_CARD':
+      return {
+        ...state,
+        card: action.payload
+      }
+    default:
+      return state;
+  }
+}
+
 const ThreeLines = () => {
 
-  const [pileOne, setPileOne] = useState([]);
-  const [pileTwo, setPileTwo] = useState([]);
-  const [pileThree, setPileThree] = useState([]);
-  const [finalDeck, setFinalDeck] = useState([]);
-  const [repeat, setRepeat] = useState(3);
-  const [card, setCard] = useState(null);
-  const [halfDeck, setHalfDeck] = useState(null);
+  const [ state, dispatch ] = useReducer(reducer, initialState)
 
   const resetGame = async () => {
-    await setPileOne([])
-    await setPileTwo([])
-    await setPileThree([])
-    await setFinalDeck([])
-    await setRepeat(3)
-    await setHalfDeck(null)
-    await setCard(null);
-    await updateHalf();
+    dispatch({
+      type: 'RESET_GAME'
+    })
   }
 
   const updateHalf = async () => {
     const response = await getHalfDeck()
-    await setHalfDeck(response.data.cards)
+    await dispatch({
+      type: 'UPDATE_HALFDECK',
+      payload: response.data.cards
+
+    })
   }
 
   useEffect(()=>{
-    updateHalf()
-  },[])
+    if(state.halfDeck === null) updateHalf()
+
+
+  },[state.halfDeck])
 
   useEffect(() => {
-    if(halfDeck){
-      setPileOne(halfDeck.slice(0,7))
-      setPileTwo(halfDeck.slice(7,14))
-      setPileThree(halfDeck.slice(14,21))
+    if(state.halfDeck){
+      dispatch({
+        type: 'SET_FIRST_PILES',
+        payload: state.halfDeck
+      })
     }
-
-  }, [halfDeck])
+  }, [state.halfDeck])
 
   useEffect(()=>{
-    if(repeat === 0) setLastCard(finalDeck)
+    if(state.repeat === 0) setLastCard(state.finalDeck)
     // eslint-disable-next-line
-  },[repeat])
+  },[state.repeat])
 
   const setLastCard = async (deck) => {
-    await setCard(deck[10])
+    await dispatch({
+      type: 'SET_LAST_CARD',
+      payload: deck[10]
+    })
   }
 
   const selectLine = async (lineNum) => {
-    const response = await getLineNumber(lineNum, pileOne, pileTwo, pileThree);
-    const { newPileOne, newPileTwo, newPileThree,newDeck } = response;
-      setPileOne(newPileOne);
-      setPileTwo(newPileTwo);
-      setPileThree(newPileThree);
-      setFinalDeck(newDeck)
-      setRepeat(repeat -1)
+    const response = await getLineNumber(lineNum, state.pileOne, state.pileTwo, state.pileThree);
+    const { newPileOne, newPileTwo, newPileThree, newDeck } = response;
+      await dispatch({
+        type: 'SET_NEW_PILES',
+        payload: {newPileOne,newPileTwo,newPileThree}
+      })
+      await dispatch({
+        type: 'SET_FINAL_DECK',
+        payload: newDeck
+      })
+      await dispatch({
+        type: 'REPEAT',
+        payload: state.repeat - 1
+      })
   }
 
     return (
         <div>
-        {!halfDeck ? <Spinner/> : null}
-          {card ? <LastCard card={card} resetGame={resetGame} /> : <Fragment>
-            <Line pile={pileOne} selectLine={selectLine} lineNum={1} />
-            <Line pile={pileTwo} selectLine={selectLine} lineNum={2} />
-            <Line pile={pileThree} selectLine={selectLine} lineNum={3} />
+        {!state.halfDeck ? <Spinner/> : null}
+          {state.card ? <LastCard card={state.card} resetGame={resetGame} /> : <Fragment>
+            <Line pile={state.pileOne} selectLine={selectLine} lineNum={1} />
+            <Line pile={state.pileTwo} selectLine={selectLine} lineNum={2} />
+            <Line pile={state.pileThree} selectLine={selectLine} lineNum={3} />
           </Fragment>}
 
         </div>
