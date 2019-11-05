@@ -65,11 +65,11 @@ const ThreeLines = () => {
     return (
         <div>
         {!halfDeck ? <Spinner/> : null}
-          {!card ? <Fragment>
+          {card ? <LastCard card={card} resetGame={resetGame} /> : <Fragment>
             <Line pile={pileOne} selectLine={selectLine} lineNum={1} />
             <Line pile={pileTwo} selectLine={selectLine} lineNum={2} />
             <Line pile={pileThree} selectLine={selectLine} lineNum={3} />
-          </Fragment> : <LastCard card={card} resetGame={resetGame} />}
+          </Fragment>}
 
         </div>
     )
