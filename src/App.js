@@ -17,7 +17,7 @@ function App() {
       <Navbar/>
       <div className="container">
         <Switch>
-          <Route path="/start" component={ThreeLines}>
+          <Route path="/play" component={ThreeLines}>
           </Route>
           <Route path="/about" component={About}>
           </Route>

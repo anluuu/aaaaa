@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import Line from './Line.js';
-import { getLineNumber, getHalfDeck } from '../services'
+import { getLineNumber, getHalfDeck } from '../services';
+import Spinner from '../components/layouts/Spinner.js';
+import LastCard from './LastCard';
 
 const ThreeLines = () => {
 
@@ -11,6 +13,17 @@ const ThreeLines = () => {
   const [repeat, setRepeat] = useState(3);
   const [card, setCard] = useState(null);
   const [halfDeck, setHalfDeck] = useState(null);
+
+  const resetGame = async () => {
+    await setPileOne([])
+    await setPileTwo([])
+    await setPileThree([])
+    await setFinalDeck([])
+    await setRepeat(3)
+    await setHalfDeck(null)
+    await setCard(null);
+    await updateHalf();
+  }
 
   const updateHalf = async () => {
     const response = await getHalfDeck()
@@ -51,11 +64,12 @@ const ThreeLines = () => {
 
     return (
         <div>
+        {!halfDeck ? <Spinner/> : null}
           {!card ? <Fragment>
             <Line pile={pileOne} selectLine={selectLine} lineNum={1} />
             <Line pile={pileTwo} selectLine={selectLine} lineNum={2} />
             <Line pile={pileThree} selectLine={selectLine} lineNum={3} />
-          </Fragment> : <img src={card.image} className="center-image" alt="last card" width="200" />}
+          </Fragment> : <LastCard card={card} resetGame={resetGame} />}
 
         </div>
     )

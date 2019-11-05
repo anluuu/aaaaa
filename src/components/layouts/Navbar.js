@@ -5,14 +5,14 @@ const Navbar = () => {
   return(
     <nav className='navbar bg-dark'>
       <h1>
-      <GiAce/>21 Card Trick
+      <GiAce/><Link to="/">21 CARD TRICK</Link>
       </h1>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/"><strong>Home</strong></Link>
         </li>
         <li>
-          <Link to='/about'>About</Link>
+          <Link to='/about'><strong>About</strong></Link>
         </li>
       </ul>
     </nav>

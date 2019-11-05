@@ -19,7 +19,7 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #fff;
+  background-color: #14141f;
   color: #333;
 }
 
@@ -63,6 +63,9 @@ ul {
 
 .text-center {
   text-align: center;
+}
+.text-light {
+  color: #cccccc;
 }
 
 .text-primary {
@@ -384,7 +387,14 @@ table th {
 
 }
 .cardStyle:hover {
-  border: 4px solid black
+  border: 4px solid red;
+  border-radius: 15px;
+  width: min-content;
+}
+.centered {
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 50%;
 }
 
 /* Mobile Styles */
