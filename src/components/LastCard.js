@@ -7,7 +7,7 @@ const LastCard = ({card, resetGame}) => {
 
   const handleClick = () => {
       resetGame()
-  }
+  };
 
   return (
     <div>
@@ -22,6 +22,6 @@ const LastCard = ({card, resetGame}) => {
       </div>
     </div>
   )
-}
+};
 
 export default LastCard;
