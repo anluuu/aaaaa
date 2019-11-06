@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Card from './layouts/Card'
-
+import { TextCenter, AllCenter, TextLight, LastCardImg, PlayAgain } from '../components/layouts/Styles';
 
 const LastCard = ({card, resetGame}) => {
 
@@ -11,15 +10,15 @@ const LastCard = ({card, resetGame}) => {
 
   return (
     <div>
-      <div className="all-center">
-        <h1 className="text-light"><strong>Is this your card?</strong></h1>
-        <img src={card.image} className="center-image" alt="last card" width="200" />
+      <AllCenter>
+        <TextLight>Is this your card?</TextLight>
+        <LastCardImg src={card.image} alt="last card" />
         <br/>
-      </div>
-      <div className="text-center">
-        <Link to="/play" className="btn btn-light m-1" onClick={handleClick}> Play Again </Link>
+      </AllCenter>
+      <TextCenter>
+        <PlayAgain to="/play" onClick={handleClick}> Play Again </PlayAgain>
         <Card />
-      </div>
+      </TextCenter>
     </div>
   )
 };

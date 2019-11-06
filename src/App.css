@@ -263,7 +263,7 @@ ul {
 .bg-light,
 .badge-light,
 .alert-light {
-  background: var(--light-color);
+  background: #f4f4f4;;
   color: #333;
 }
 

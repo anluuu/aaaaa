@@ -8,6 +8,12 @@ import './App.css';
 import Navbar from './components/layouts/Navbar';
 import About from './components/pages/About';
 import Home from './components/pages/Home';
+import { Container } from './components/layouts/Styles';
+import {createGlobalStyle} from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  
+`;
 
 function App() {
 
@@ -15,7 +21,7 @@ function App() {
     <Router>
     <div className="App">
       <Navbar/>
-      <div className="container">
+      <Container>
         <Switch>
           <Route path="/play" component={ThreeLines}>
           </Route>
@@ -24,7 +30,7 @@ function App() {
           <Route path="/" component={Home}>
           </Route>
         </Switch>
-        </div>
+        </Container>
       </div>
     </Router>
   );
